@@ -5,8 +5,8 @@
 # Set up source and target array names and users
 
 runtime=scripted-`date "+%Y-%m-%d-%H-%M-%S"`
-sourcearray="10.21.39.107"
-targetarray="10.21.39.107"
+sourcearray="XX.XX.XX.XXX"
+targetarray="XX.XX.XX.XXX"
 
 # Using username auth, this should use public keys instead if you want it to run without asking for a password.
 # Using password auth can be a failsafe that prevents accidental use of the script, however. 

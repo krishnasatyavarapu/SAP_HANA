@@ -27,7 +27,7 @@ echo "Unmounting the Target SAP HANA system data volume"
 umount /hana/data/P66
 
 echo "Prepare the source SAP HANA for Storage Snapshot..."
-ssh p66adm@10.21.39.145 "
+ssh p66adm@"XX.XX.XX.XXX" "
 /usr/sap/P66/home/.profile
 /usr/sap/P66/home/.bashrc
 /usr/sap/P66/home/.sapsrc.sh
@@ -37,7 +37,7 @@ cd /usr/sap/P66/HDB00
 export PATH=/usr/sap/P66/HDB00/saphana:/usr/sap/P66/HDB00:/usr/sap/P66/HDB00/exe:/usr/sap/P66/HDB00/exe/mdc:/usr/sap/P66/HDB00/exe/Python/bin:/usr/sap/P66/HDB00/exe/dat_bin_dir:.:/usr/sap/P66/home:/usr/sap/P66/home/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin
 
 pwd
-hdbsql -S P66 -n 10.21.39.145:30015 -u system -p Osmium76 <<EOF
+hdbsql -S P66 -n "XX.XX.XX.XXX":30015 -u system -p Osmium76 <<EOF
 BACKUP DATA CREATE SNAPSHOT;
 select * from M_BACKUP_CATALOG WHERE "ENTRY_TYPE_NAME" = 'data snapshot' and "STATE_NAME" = 'prepared'
 exit
@@ -48,7 +48,7 @@ varbackupid=`sed '12!d' backup_id.txt | cut -d',' -f1`
 echo "Backup id $varbackupid"
 
 echo "Freezing the Data volumes File system"
-ssh root@10.21.39.145 "
+ssh root@"XX.XX.XX.XXX" "
 xfs_freeze -f /hana/data/P66
 "
 
@@ -59,12 +59,12 @@ echo "Take snapshot of Data volume..."
 
 
 echo "Unfreezing the Data volumes File system"
-ssh root@10.21.39.145 "
+ssh root@"XX.XX.XX.XXX" "
 xfs_freeze -u /hana/data/P66
 "
 
 echo "Close SAP HANA for Storage Snapshot..."
-ssh p66adm@10.21.39.145 "
+ssh p66adm@"XX.XX.XX.XXX" "
 /usr/sap/P66/home/.profile
 /usr/sap/P66/home/.bashrc
 /usr/sap/P66/home/.sapsrc.sh
@@ -73,7 +73,7 @@ pwd
 cd /usr/sap/P66/HDB00
 export PATH=/usr/sap/P66/HDB00/saphana:/usr/sap/P66/HDB00:/usr/sap/P66/HDB00/exe:/usr/sap/P66/HDB00/exe/mdc:/usr/sap/P66/HDB00/exe/Python/bin:/usr/sap/P66/HDB00/exe/dat_bin_dir:.:/usr/sap/P66/home:/usr/sap/P66/home/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin
 pwd
-hdbsql -S P66 -n 10.21.39.145:30015 -u system -p Osmium76 <<EOF
+hdbsql -S P66 -n "XX.XX.XX.XXX":30015 -u system -p Osmium76 <<EOF
 BACKUP DATA CLOSE SNAPSHOT BACKUP_ID $varbackupid UNSUCCESSFUL;
 exit
 EOF
@@ -83,7 +83,7 @@ mount /dev/mapper/3624a9370122281ffa371414400011077 /hana/data/P66
 
 echo "Restart SAP HANA...."
 
-ssh p66adm@10.21.39.146 "
+ssh p66adm@"XX.XX.XX.XXX" "
 cd /usr/sap/P66/HDB00/
 ./HDBSettings.sh recoverSys.py --silent --command=RECOVER\ DATA\ \ USING\ SNAPSHOT\ \ CLEAR\ LOG --masterOnly
 "
